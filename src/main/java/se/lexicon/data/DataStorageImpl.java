@@ -59,18 +59,10 @@ public class DataStorageImpl implements DataStorage {
 
     @Override
     public String findOneAndMapToString(Predicate<Person> filter, Function<Person, String> personToString) {
-        return personToString.apply((findOne(filter))); //This doesn't return the string specified in the specifications of the assignment
-//        Person person = findOne(filter); // This does on the other hand.
-//        if (person != null) {
-//            String name = person.getFirstName() + " " + person.getLastName();
-//            String birthDate = person.getBirthDate().toString();
-//            return "Name: " + name + " born " + birthDate;
-//        } else {
-//            return "Person not found";
-//        }
+        return personToString.apply((findOne(filter)));
     }
 
-    @Override // Added a custom format function as an argument to this method so we can have different output designs for each call of the method
+    @Override // personToString is a custom format function sent as a parameter to this method so we can have different output designs for each call of the method
     public List<String> findManyAndMapEachToString(Predicate<Person> filter, Function<Person, String> personToString) {
         List<String> result = new ArrayList<>();
         for (Person person : personList) {
@@ -80,18 +72,6 @@ public class DataStorageImpl implements DataStorage {
         }
         return result;
     }
-//    @Override
-//    public List<String> findManyAndMapEachToString(Predicate<Person> filter, Function<Person, String> personToString) {
-//        List<String> result = new ArrayList<>();
-//        for (Person person : personList) {
-//            if (filter.test(person)) {
-//                String name = person.getFirstName() + " " + person.getLastName();
-//                String birthDate = person.getBirthDate().toString();
-//                result.add("Name: " + name + " born " + birthDate);
-//            }
-//        }
-//        return result;
-//    }
 
     @Override
     public void findAndDo(Predicate<Person> filter, Consumer<Person> consumer) {
