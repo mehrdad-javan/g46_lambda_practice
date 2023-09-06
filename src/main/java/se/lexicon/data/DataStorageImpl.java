@@ -51,8 +51,19 @@ public class DataStorageImpl implements DataStorage {
 
     @Override
     public String findOneAndMapToString(Predicate<Person> filter, Function<Person, String> personToString) {
-        return null;
+//        Person person = findOne(filter);
+        return personList.stream()
+                .filter(filter)
+                .findFirst()
+                .map(personToString)
+                .orElse("Person not found");
     }
+
+//    @Override //todo: remove this once we don't need it anymore
+//    public List<Person> findAll() {
+//        return personList.stream()
+//                .toList();
+//    }
 
     @Override
     public List<String> findManyAndMapEachToString(Predicate<Person> filter, Function<Person, String> personToString) {
