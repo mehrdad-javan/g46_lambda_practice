@@ -1,6 +1,12 @@
 package se.lexicon;
 
 import se.lexicon.data.DataStorage;
+import se.lexicon.model.Gender;
+import se.lexicon.model.Person;
+
+import java.time.LocalDate;
+import java.util.List;
+import java.util.function.Predicate;
 
 public class Exercises {
 
@@ -8,11 +14,14 @@ public class Exercises {
 
     /*
        TODO:  1.	Find everyone that has firstName: “Erik” using findMany().
+
     */
     public static void exercise1(String message) {
         System.out.println(message);
         //Write your code here
-
+        Predicate<Person> erikPredicate = person -> "Erik".equals(person.getFirstName());
+        List<Person> foundPeople = storage.findMany(erikPredicate);
+        foundPeople.forEach(System.out::println);
         System.out.println("----------------------");
     }
 
@@ -22,17 +31,22 @@ public class Exercises {
     public static void exercise2(String message) {
         System.out.println(message);
         //Write your code here
-
+        Predicate<Person> females = person -> Gender.FEMALE.equals(person.getGender());
+        List<Person> foundPeople = storage.findMany(females);
+        foundPeople.forEach(System.out::println);
         System.out.println("----------------------");
     }
 
     /*
-        TODO:  3.	Find all who are born after (and including) 2000-01-01 using findMany().
+        TODO:  3.	Find all who were born after (and including) 2000-01-01 using findMany().
      */
     public static void exercise3(String message) {
         System.out.println(message);
         //Write your code here
-
+        LocalDate date = LocalDate.of(2000, 1, 1).minusDays(1);
+        Predicate<Person> afterDate = person -> date.isBefore(person.getBirthDate());
+        List<Person> foundPeople = storage.findMany(afterDate);
+        foundPeople.forEach(System.out::println);
         System.out.println("----------------------");
     }
 
@@ -42,7 +56,8 @@ public class Exercises {
     public static void exercise4(String message) {
         System.out.println(message);
         //Write your code here
-
+        Predicate<Person> personById = person -> "123".equals(String.valueOf(person.getId()));
+        System.out.println(storage.findOne(personById));
         System.out.println("----------------------");
 
     }
