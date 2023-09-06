@@ -6,6 +6,7 @@ import se.lexicon.model.Person;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.function.Function;
 import java.util.function.Predicate;
 
 public class Exercises {
@@ -56,8 +57,9 @@ public class Exercises {
     public static void exercise4(String message) {
         System.out.println(message);
         //Write your code here
-        Predicate<Person> personById = person -> "123".equals(String.valueOf(person.getId()));
-        System.out.println(storage.findOne(personById));
+        System.out.println(storage.findOne((person -> person.getId() == 123)));
+//        Predicate<Person> personById = person -> "123".equals(String.valueOf(person.getId()));
+//        System.out.println(storage.findOne(personById));
         System.out.println("----------------------");
 
     }
@@ -68,8 +70,18 @@ public class Exercises {
      */
     public static void exercise5(String message) {
         System.out.println(message);
-        //Write your code here
+        // Write your code here
+        Predicate<Person> personById = person -> person.getId() == 456;
 
+        // Define the custom format function
+        Function<Person, String> customFormat = person -> {
+            String name = person.getFirstName() + " " + person.getLastName();
+            String birthDate = person.getBirthDate().toString();
+            return "Name: " + name + " born " + birthDate;
+        };
+
+        String formatted = storage.findOneAndMapToString(personById, customFormat);
+        System.out.println(formatted);
         System.out.println("----------------------");
     }
 
@@ -78,11 +90,15 @@ public class Exercises {
      */
     public static void exercise6(String message) {
         System.out.println(message);
-        //Write your code here
+        // Write your code here
         Predicate<Person> maleNamesStartingWithE = person ->
                 person.getGender() == Gender.MALE && person.getFirstName().startsWith("E");
 
-        List<String> maleNamesStartingWithEStrings = storage.findManyAndMapEachToString(maleNamesStartingWithE, Person::toString);
+        List<String> maleNamesStartingWithEStrings = storage.findManyAndMapEachToString(maleNamesStartingWithE, person -> {
+            String name = person.getFirstName() + " " + person.getLastName(); //Custom format
+            String birthDate = person.getBirthDate().toString();//Custom format
+            return "Name: " + name + " born " + birthDate;//Custom format
+        });
 
         maleNamesStartingWithEStrings.forEach(System.out::println);
 
@@ -96,8 +112,17 @@ public class Exercises {
     public static void exercise7(String message) {
         System.out.println(message);
         //Write your code here
+        Predicate<Person> belowAgeOf10 = person -> {
+            int age = LocalDate.now().getYear() - person.getBirthDate().getYear();
+            return age < 10;
+        };
 
-        System.out.println("----------------------");
+        List<String> belowAgeOf10Strings = storage.findManyAndMapEachToString(belowAgeOf10, person -> {
+            int age = LocalDate.now().getYear() - person.getBirthDate().getYear();//Custom format
+            return "Name: " + person.getFirstName() + " " + person.getLastName() + " " + age + " years";//Custom format
+        });
+
+        belowAgeOf10Strings.forEach(System.out::println);
     }
 
     /*
