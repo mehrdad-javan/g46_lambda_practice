@@ -36,16 +36,9 @@ public class DataStorageImpl implements DataStorage {
 
     @Override
     public List<Person> findMany(Predicate<Person> filter) {
-        List<Person> result = new ArrayList<>();
         return personList.stream()
                 .filter(filter)
                 .toList();
-//        for (Person person : personList) {
-//            if (filter.test(person)) {
-//                result.add(person);
-//            }
-//        }
-//        return result;
     }
 
 
@@ -62,7 +55,7 @@ public class DataStorageImpl implements DataStorage {
         return personToString.apply((findOne(filter)));
     }
 
-    @Override // personToString is a custom format function sent as a parameter to this method so we can have different output designs for each call of the method
+    @Override // personToString is a custom format function sent as a parameter to this method, so we can have different output designs for each call of the method
     public List<String> findManyAndMapEachToString(Predicate<Person> filter, Function<Person, String> personToString) {
         List<String> result = new ArrayList<>();
         for (Person person : personList) {
