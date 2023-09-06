@@ -74,11 +74,17 @@ public class Exercises {
     }
 
     /*
-        TODO:  6.	Find all male people whose names start with “E” and convert each to a String using findManyAndMapEachToString().
+        TODO: Implement method that finds all male people whose names start with “E” and convert each to a String using findManyAndMapEachToString().
      */
     public static void exercise6(String message) {
         System.out.println(message);
         //Write your code here
+        Predicate<Person> maleNamesStartingWithE = person ->
+                person.getGender() == Gender.MALE && person.getFirstName().startsWith("E");
+
+        List<String> maleNamesStartingWithEStrings = storage.findManyAndMapEachToString(maleNamesStartingWithE, Person::toString);
+
+        maleNamesStartingWithEStrings.forEach(System.out::println);
 
         System.out.println("----------------------");
     }
